@@ -7,6 +7,13 @@ import (
 	"os"
 )
 
+type response struct {
+	Status  string      `json:"status"`
+	Message string      `json:"message"`
+	Error   string      `json:"error"`
+	Data    interface{} `json:"data"`
+}
+
 func RequireEnv(name string) string {
 	value := os.Getenv(name)
 	if value == "" {
@@ -18,10 +25,10 @@ func RequireEnv(name string) string {
 
 func sendErrorResponse(w http.ResponseWriter, httpStatus int, message string) {
 	response := &response{
-		Status: "failure",
+		Status:  "failure",
 		Message: "An error has occured",
-		Error: message,
-		Data: struct{}{}
+		Error:   message,
+		Data:    struct{}{},
 	}
 
 	w.Header().Set("Content-Type", "application/json")
